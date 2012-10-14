@@ -1,6 +1,7 @@
 #ifndef strings_h
 #define strings_h
 
+#include <sstream>
 #include <string>
 #include <list>
 #include <vector>

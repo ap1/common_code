@@ -1,6 +1,8 @@
 #ifndef debugs_h
 #define debugs_h
 
+#include <assert.h>
+
 // useful macros
 #define __DEB                    {printf("Reached %s (%d)\n",__FILE__,__LINE__);}
 #define __ERR                    {printf("ERROR AT %s (%d)\n",__FILE__,__LINE__); exit(1);}
