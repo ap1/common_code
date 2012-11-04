@@ -48,17 +48,18 @@ inline float sphereVolume(float r, int dimension){
   float pi = M_PI;
 
   switch(dimension){
-    case  0: return ( 1.0f);                                              break;
-    case  1: return ( 2.0f)                         * r;                  break;
-    case  2: return ( 1.0f)        * pi             * r*r;                break;
-    case  3: return ( 4.0f/  3.0f) * pi             * r*r*r;              break;
-    case  4: return ( 1.0f/  2.0f) * pi*pi          * r*r*r*r;            break;
-    case  5: return ( 8.0f/ 15.0f) * pi*pi          * r*r*r*r*r;          break;
-    case  6: return ( 1.0f/  6.0f) * pi*pi*pi       * r*r*r*r*r*r;        break;
-    case  7: return (16.0f/105.0f) * pi*pi*pi       * r*r*r*r*r*r*r;      break;
-    case  8: return ( 1.0f/ 24.0f) * pi*pi*pi*pi    * r*r*r*r*r*r*r*r;    break;
-    case  9: return (32.0f/945.0f) * pi*pi*pi*pi    * r*r*r*r*r*r*r*r*r;  break;
-    case 10: return ( 1.0f/120.0f) * pi*pi*pi*pi*pi * r*r*r*r*r*r*r*r*r*r;break;
+    case  0: return ( 1.0f);                                                  break;
+    case  1: return ( 2.0f)                           * r;                    break;
+    case  2: return ( 1.0f)          * pi             * r*r;                  break;
+    case  3: return ( 4.0f/  3.0f)   * pi             * r*r*r;                break;
+    case  4: return ( 1.0f/  2.0f)   * pi*pi          * r*r*r*r;              break;
+    case  5: return ( 8.0f/ 15.0f)   * pi*pi          * r*r*r*r*r;            break;
+    case  6: return ( 1.0f/  6.0f)   * pi*pi*pi       * r*r*r*r*r*r;          break;
+    case  7: return (16.0f/105.0f)   * pi*pi*pi       * r*r*r*r*r*r*r;        break;
+    case  8: return ( 1.0f/ 24.0f)   * pi*pi*pi*pi    * r*r*r*r*r*r*r*r;      break;
+    case  9: return (32.0f/945.0f)   * pi*pi*pi*pi    * r*r*r*r*r*r*r*r*r;    break;
+    case 10: return ( 1.0f/120.0f)   * pi*pi*pi*pi*pi * r*r*r*r*r*r*r*r*r*r;  break;
+    case 11: return (64.0f/10395.0f) * pi*pi*pi*pi*pi * r*r*r*r*r*r*r*r*r*r*r;break;
     default: assertPrint(0, "Sphere volume not defined for %d dimensions\n",
                dimension);
   };

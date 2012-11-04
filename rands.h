@@ -14,4 +14,9 @@ inline void shuffle(float *samp, int count){
     }
 }
 
+
+inline float randRanged(float randmin, float randmax){
+  return (randmin) + ((float)rand01()*(randmax - randmin));
+}
+
 #endif
