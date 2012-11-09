@@ -1,6 +1,7 @@
 #ifndef matrices_h
 #define matrices_h
 
+#include "cvecs.h"
 
 inline void dispMat(float mat[], int size, int cols){
     printf("showing matrix:\n");
@@ -98,7 +99,25 @@ inline void ntransform(const float m[16], const vec3f& vin, vec3f& vout){
     vout.x() = vin.peekx() * m[ 0] + vin.peeky() * m[ 1] + vin.peekz() * m[ 2];
     vout.y() = vin.peekx() * m[ 4] + vin.peeky() * m[ 5] + vin.peekz() * m[ 6];
     vout.z() = vin.peekx() * m[ 8] + vin.peeky() * m[ 9] + vin.peekz() * m[10];
+}
 
+
+inline void vtransform(const float m[16], const cvec4f& vin, cvec4f& vout){
+    vout.x = vin.x * m[ 0] + vin.y * m[ 4] + vin.z * m[ 8] + vin.w * m[12];
+    vout.y = vin.x * m[ 1] + vin.y * m[ 5] + vin.z * m[ 9] + vin.w * m[13];
+    vout.z = vin.x * m[ 2] + vin.y * m[ 6] + vin.z * m[10] + vin.w * m[14];
+    vout.w = vin.x * m[ 3] + vin.y * m[ 7] + vin.z * m[11] + vin.w * m[15];
+}
+
+inline void vtransform(const float m[16], const cvec3f& vin, cvec4f& vout){
+    cvec4f vh = gencvec4f(vin.x, vin.y, vin.z, 1.0f);
+    vtransform(m, vh, vout);
+}
+
+inline void ntransform(const float m[16], const cvec3f& vin, cvec3f& vout){
+    vout.x = vin.x * m[ 0] + vin.y * m[ 1] + vin.z * m[ 2];
+    vout.y = vin.x * m[ 4] + vin.y * m[ 5] + vin.z * m[ 6];
+    vout.z = vin.x * m[ 8] + vin.y * m[ 9] + vin.z * m[10];
 }
 
 #endif

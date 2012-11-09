@@ -206,16 +206,23 @@ bool baryCentricTriangle(vec2f p, vec3f v1, vec3f v2, vec3f v3, float &u, float 
 	return true;
 }
 
-void clamp(vec3f & v, float min, float max)
+void clamp(vec3f & v, float vmin, float vmax)
 {
-	if(v.peekx() > max) v.x() = max;
-	if(v.peekx() < min) v.x() = min;
+	if(v.peekx() > vmax) v.x() = vmax;
+	if(v.peekx() < vmin) v.x() = vmin;
 
-	if(v.peeky() > max) v.y() = max;
-	if(v.peeky() < min) v.y() = min;
+	if(v.peeky() > vmax) v.y() = vmax;
+	if(v.peeky() < vmin) v.y() = vmin;
 
-	if(v.peekz() > max) v.z() = max;
-	if(v.peekz() < min) v.z() = min;
+	if(v.peekz() > vmax) v.z() = vmax;
+	if(v.peekz() < vmin) v.z() = vmin;
+}
+
+void clamp(cvec3f & v, float vmin, float vmax)
+{
+	if(v.x > vmax) v.x = vmax; if(v.x < vmin) v.x = vmin;
+	if(v.y > vmax) v.y = vmax; if(v.y < vmin) v.y = vmin;
+	if(v.z > vmax) v.z = vmax; if(v.z < vmin) v.z = vmin;
 }
 
 void matmultvec4f(const float * matrix, const vec4f& v, vec4f& ssv)
@@ -225,3 +232,4 @@ void matmultvec4f(const float * matrix, const vec4f& v, vec4f& ssv)
 	ssv.z() = matrix[2] * v.peekx() + matrix[6] * v.peeky() + matrix[10] * v.peekz() + matrix[14] * v.peekw();
 	ssv.w() = matrix[3] * v.peekx() + matrix[7] * v.peeky() + matrix[11] * v.peekz() + matrix[15] * v.peekw();
 }
+

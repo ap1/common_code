@@ -9,6 +9,7 @@
 #endif
 
 #define TIME_SO_FAR(reason,...)  {printf("----> Time : %0.2f [", ((float)(clock()-frameStartTime))/(float)CLOCKS_PER_SEC); printf(reason,__VA_ARGS__); printf("]\n");}
+#define TIME_SO_FAR2(start,reason,...)  {printf("----> Time : %0.2f [", ((float)(clock()-start))/(float)CLOCKS_PER_SEC); printf(reason,__VA_ARGS__); printf("]\n");}
 
 inline std::string strTimestamp(){
   time_t rawtime = time(NULL);
