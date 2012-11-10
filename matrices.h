@@ -6,7 +6,7 @@
 inline void dispMat(float mat[], int size, int cols){
     printf("showing matrix:\n");
     for(int i=0; i<size; i++){
-        printf("%0.3f ", mat[i]);
+        printf("% 0.3f ", mat[i]);
         if(i%cols == (cols-1)) printf("\n");
     }
 }
@@ -153,12 +153,33 @@ inline void mat4fMult(float out[16], const float m1[16], const float m2[16]){
   // out = m1 x m2
   for(int r=0; r<4; r++){
     for(int c=0; c<4; c++){
-      mat4fval(out,r,c) = 0.0f;
+      out[r*4+c] = 0.0f;
       for(int k=0; k<4; k++){
-        mat4fval(out,r,c) += mat4fval(out,r,k) * mat4fval(out,k,c);
+        out[r*4+c] += (m1[4*r+k] * m2[4*k+c]);
       }
     }
   }
+
+  //out[ 0] = m1[ 0]*m2[ 0] + m1[ 1]*m2[ 4] + m1[ 2]*m2[ 8] + m1[ 3]*m2[12];
+  //out[ 1] = m1[ 0]*m2[ 1] + m1[ 1]*m2[ 5] + m1[ 2]*m2[ 9] + m1[ 3]*m2[13];
+  //out[ 2] = m1[ 0]*m2[ 2] + m1[ 1]*m2[ 6] + m1[ 2]*m2[10] + m1[ 3]*m2[14];
+  //out[ 3] = m1[ 0]*m2[ 3] + m1[ 1]*m2[ 7] + m1[ 2]*m2[11] + m1[ 3]*m2[15];
+
+  //out[ 4] = m1[ 4]*m2[ 0] + m1[ 5]*m2[ 4] + m1[ 6]*m2[ 8] + m1[ 7]*m2[12];
+  //out[ 5] = m1[ 4]*m2[ 1] + m1[ 5]*m2[ 5] + m1[ 6]*m2[ 9] + m1[ 7]*m2[13];
+  //out[ 6] = m1[ 4]*m2[ 2] + m1[ 5]*m2[ 6] + m1[ 6]*m2[10] + m1[ 7]*m2[14];
+  //out[ 7] = m1[ 4]*m2[ 3] + m1[ 5]*m2[ 7] + m1[ 6]*m2[11] + m1[ 7]*m2[15];
+
+  //out[ 8] = m1[ 8]*m2[ 0] + m1[ 9]*m2[ 4] + m1[10]*m2[ 8] + m1[11]*m2[12];
+  //out[ 9] = m1[ 8]*m2[ 1] + m1[ 9]*m2[ 5] + m1[10]*m2[ 9] + m1[11]*m2[13];
+  //out[10] = m1[ 8]*m2[ 2] + m1[ 9]*m2[ 6] + m1[10]*m2[10] + m1[11]*m2[14];
+  //out[11] = m1[ 8]*m2[ 3] + m1[ 9]*m2[ 7] + m1[10]*m2[11] + m1[11]*m2[15];
+
+  //out[12] = m1[12]*m2[ 0] + m1[13]*m2[ 4] + m1[14]*m2[ 8] + m1[15]*m2[12];
+  //out[13] = m1[12]*m2[ 1] + m1[13]*m2[ 5] + m1[14]*m2[ 9] + m1[15]*m2[13];
+  //out[14] = m1[12]*m2[ 2] + m1[13]*m2[ 6] + m1[14]*m2[10] + m1[15]*m2[14];
+  //out[15] = m1[12]*m2[ 3] + m1[13]*m2[ 7] + m1[14]*m2[11] + m1[15]*m2[15];
+
 }
 
 inline void mat4fMultInplace(float m1[16], const float m2[16]){
@@ -166,6 +187,14 @@ inline void mat4fMultInplace(float m1[16], const float m2[16]){
   float tmp[16];
   mat4fMult(tmp, m1, m2);
   memcpy(m1, tmp, 16*sizeof(float));
+}
+
+inline void mat4fTranslate(float m[16], const float& x, const float& y, const float& z){
+  // note: we are premultiplying
+  m[12] += (x*m[ 0] + y*m[ 4] + z*m[ 8]);
+  m[13] += (x*m[ 1] + y*m[ 5] + z*m[ 9]);
+  m[14] += (x*m[ 2] + y*m[ 6] + z*m[10]);
+  m[15] += (x*m[ 3] + y*m[ 7] + z*m[11]);
 }
 
 #endif
