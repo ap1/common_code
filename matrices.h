@@ -190,7 +190,7 @@ inline void mat4fMultInplace(float m1[16], const float m2[16]){
 }
 
 inline void mat4fTranslate(float m[16], const float& x, const float& y, const float& z){
-  // note: we are premultiplying
+  // note: we are premultiplying because our matrices are row major
   m[12] += (x*m[ 0] + y*m[ 4] + z*m[ 8]);
   m[13] += (x*m[ 1] + y*m[ 5] + z*m[ 9]);
   m[14] += (x*m[ 2] + y*m[ 6] + z*m[10]);

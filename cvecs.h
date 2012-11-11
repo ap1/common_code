@@ -25,6 +25,7 @@
 struct cvec2f{ float  x, y;       };
 struct cvec3f{ float  x, y, z;    };
 struct cvec4f{ float  x, y, z, w; };
+
 struct cvec2i{ int    x, y;       };
 struct cvec3i{ int    x, y, z;    };
 struct cvec4i{ int    x, y, z, w; };
@@ -32,6 +33,10 @@ struct cvec4i{ int    x, y, z, w; };
 inline cvec2f   gencvec2f(const float& x, const float& y)                                { cvec2f v; v.x=x; v.y=y; return v;}
 inline cvec3f   gencvec3f(const float& x, const float& y, const float& z)                { cvec3f v; v.x=x; v.y=y; v.z=z; return v;}
 inline cvec4f   gencvec4f(const float& x, const float& y, const float& z, const float& w){ cvec4f v; v.x=x; v.y=y; v.z=z; v.w=w; return v;}
+
+inline cvec2i   gencvec2i(const int& x, const int& y)                                    { cvec2i v; v.x=x; v.y=y; return v;}
+inline cvec3i   gencvec3i(const int& x, const int& y, const int& z)                      { cvec3i v; v.x=x; v.y=y; v.z=z; return v;}
+inline cvec4i   gencvec4i(const int& x, const int& y, const int& z, const int& w)        { cvec4i v; v.x=x; v.y=y; v.z=z; v.w=w; return v;}
 
 inline cvec2f   negative(const cvec2f& v){ cvec2f n; n.x=-v.x; n.y=-v.y; return n; }
 inline cvec3f   negative(const cvec3f& v){ cvec3f n; n.x=-v.x; n.y=-v.y; n.z=-v.z; return n; }
