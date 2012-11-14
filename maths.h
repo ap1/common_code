@@ -51,18 +51,18 @@ inline float dist2d(const float& x1, const float& y1,
 inline float sphereVolume(float r, int dimension){
 
   switch(dimension){
-    case  0: return ( 1.0f);                                                  break;
-    case  1: return ( 2.0f)                           * r;                    break;
-    case  2: return ( 1.0f)          * PI             * r*r;                  break;
-    case  3: return ( 4.0f/  3.0f)   * PI             * r*r*r;                break;
-    case  4: return ( 1.0f/  2.0f)   * PI*PI          * r*r*r*r;              break;
-    case  5: return ( 8.0f/ 15.0f)   * PI*PI          * r*r*r*r*r;            break;
-    case  6: return ( 1.0f/  6.0f)   * PI*PI*PI       * r*r*r*r*r*r;          break;
-    case  7: return (16.0f/105.0f)   * PI*PI*PI       * r*r*r*r*r*r*r;        break;
-    case  8: return ( 1.0f/ 24.0f)   * PI*PI*PI*PI    * r*r*r*r*r*r*r*r;      break;
-    case  9: return (32.0f/945.0f)   * PI*PI*PI*PI    * r*r*r*r*r*r*r*r*r;    break;
-    case 10: return ( 1.0f/120.0f)   * PI*PI*PI*PI*PI * r*r*r*r*r*r*r*r*r*r;  break;
-    case 11: return (64.0f/10395.0f) * PI*PI*PI*PI*PI * r*r*r*r*r*r*r*r*r*r*r;break;
+    case  0: return ( 1.0f);                                                  
+    case  1: return ( 2.0f)                           * r;                    
+    case  2: return ( 1.0f)          * PI             * r*r;                  
+    case  3: return ( 4.0f/  3.0f)   * PI             * r*r*r;                
+    case  4: return ( 1.0f/  2.0f)   * PI*PI          * r*r*r*r;              
+    case  5: return ( 8.0f/ 15.0f)   * PI*PI          * r*r*r*r*r;            
+    case  6: return ( 1.0f/  6.0f)   * PI*PI*PI       * r*r*r*r*r*r;          
+    case  7: return (16.0f/105.0f)   * PI*PI*PI       * r*r*r*r*r*r*r;        
+    case  8: return ( 1.0f/ 24.0f)   * PI*PI*PI*PI    * r*r*r*r*r*r*r*r;      
+    case  9: return (32.0f/945.0f)   * PI*PI*PI*PI    * r*r*r*r*r*r*r*r*r;    
+    case 10: return ( 1.0f/120.0f)   * PI*PI*PI*PI*PI * r*r*r*r*r*r*r*r*r*r;  
+    case 11: return (64.0f/10395.0f) * PI*PI*PI*PI*PI * r*r*r*r*r*r*r*r*r*r*r;
     default: assertPrint(0, "Sphere volume not defined for %d dimensions\n",
                dimension);
   };

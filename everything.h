@@ -9,5 +9,6 @@
 #include "rands.h"
 #include "strings.h"
 #include "timings.h"
+#include "files.h"
 
 #endif
