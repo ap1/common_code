@@ -19,13 +19,13 @@
 
 #define ALLSYNC {__threadfence(); __syncthreads();}
 
-inline void cuiReportMemUsage(){
+inline void cuiReportMemUsage(const char* prefix=""){
   // report memory usage
   size_t avail;
   size_t total;
   cudaMemGetInfo( &avail, &total );
   size_t used = total - avail;
-  printf("Using %dMB or %dMB\n",used >> 20, total >> 20);
+  printf("%s using %dMB of %dMB\n",prefix,used >> 20, total >> 20);
 }
 
 #endif
