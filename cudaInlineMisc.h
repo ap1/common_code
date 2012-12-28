@@ -28,4 +28,14 @@ inline void cuiReportMemUsage(const char* prefix=""){
   printf("%s using %dMB of %dMB\n",prefix,used >> 20, total >> 20);
 }
 
+
+// CUDA based synchronization
+
+#define cuiTryLock(lockPtr, success)    do { \
+                                          success = (atomicExch(lockPtr, 1)==0); \
+                                        } while(0)
+#define cuiFreeLock(lockPtr)            do { \
+                                          atomicExch(lockPtr, 0); \
+                                        } while(0)
+
 #endif
