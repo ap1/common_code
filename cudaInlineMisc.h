@@ -16,6 +16,7 @@
 #define cuiIsPowerOf2(n)      (((n-1)&n)==0)
 #define cuiGetWarpsPerBlock() ((blockDim.x  >> 5) + ((blockDim.x & 31)!=0))
 #define cuiGetWarpID()        (threadIdx.x >> 5)
+#define cuiGetWarpTID()       (threadIdx.x & 31)
 #define cuiGetGlobalTID()     (blockIdx.x * blockDim.x + threadIdx.x)
 #define cuiGetGlobalWID()     (blockIdx.x * cuiGetWarpsPerBlock() + cuiGetWarpID())
 
