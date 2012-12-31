@@ -20,6 +20,9 @@ inline float maxf(const float& a, const float& b) { return (a > b) ? a : b; }
 inline int ceil_int_div(int numer, int denom){
   return (int)ceilf((float)numer / (float) denom);
 }
+inline int floor_int_div(int numer, int denom){
+  return (int)floorf((float)numer / (float) denom);
+}
 
 template <class T>
 inline T lerp(T& val1, T& val2, float t){

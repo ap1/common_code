@@ -13,9 +13,24 @@
 #define cuiMallocArray(    memptr, arrcount, datatype) do {cudaMalloc((void**)memptr, arrcount*sizeof(datatype));}while(0)
 #define cuiMallocSingleton(memptr,           datatype) do {cudaMalloc((void**)memptr,           1*sizeof(datatype));}while(0)
 
-//cudaMalloc((void**)&rstbins.VSPrimCount,              1 * sizeof(int));
+#define cuiIsPowerOf2(n)      (((n-1)&n)==0)
+#define cuiGetWarpsPerBlock() ((blockDim.x  >> 5) + ((blockDim.x & 31)!=0))
+#define cuiGetWarpID()        (threadIdx.x >> 5)
+#define cuiGetGlobalTID()     (blockIdx.x * blockDim.x + threadIdx.x)
+#define cuiGetGlobalWID()     (blockIdx.x * cuiGetWarpsPerBlock() + cuiGetWarpID())
 
-#define GLOBAL_TID (blockIdx.x * blockDim.x + threadIdx.x)
+
+
+inline void cuiTestMacros(){
+  for(int i=0; i<1000000; i++){
+    // test warps per block etc.
+    {
+      cvec2i blockDim;
+      blockDim.x = i;
+      assertPrint(cuiGetWarpsPerBlock()==(ceil_int_div(i,32)), "%d != %d\n",cuiGetWarpsPerBlock(),(ceil_int_div(i,32)));
+    }
+  }
+}
 
 #define ALLSYNC {__threadfence(); __syncthreads();}
 
@@ -28,7 +43,6 @@ inline void cuiReportMemUsage(const char* prefix=""){
   printf("%s using %dMB of %dMB\n",prefix,used >> 20, total >> 20);
 }
 
-
 // CUDA based synchronization
 
 #define cuiTryLock(lockPtr, success)    do { \
@@ -37,5 +51,6 @@ inline void cuiReportMemUsage(const char* prefix=""){
 #define cuiFreeLock(lockPtr)            do { \
                                           atomicExch(lockPtr, 0); \
                                         } while(0)
+
 
 #endif
