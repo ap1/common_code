@@ -54,4 +54,16 @@ inline void cuiReportMemUsage(const char* prefix=""){
                                         } while(0)
 
 
+#ifdef __CUDACC__
+// Get current SM ID
+// from:
+// http://stackoverflow.com/questions/2983553/cuda-injecting-my-own-ptx-function
+__device__ __forceinline__
+unsigned cuiGetSMID(void){
+  unsigned ret;
+  asm("mov.u32 %0, %smid;" : "=r"(ret) );
+  return ret;
+}
+#endif
+
 #endif
