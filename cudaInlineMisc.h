@@ -18,6 +18,7 @@
 #define cuiGetWarpID()        (threadIdx.x >> 5)
 #define cuiGetWarpTID()       (threadIdx.x & 31)
 #define cuiGetGlobalTID()     (blockIdx.x * blockDim.x + threadIdx.x)
+#define cuiGetTotalThreads()  (gridDim.x  * blockDim.x)
 #define cuiGetGlobalWID()     (blockIdx.x * cuiGetWarpsPerBlock() + cuiGetWarpID())
 
 
