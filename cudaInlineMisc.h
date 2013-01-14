@@ -56,6 +56,17 @@ inline void cuiReportMemUsage(const char* prefix=""){
 
 
 #ifdef __CUDACC__
+
+// CUDA based queues
+
+template <class T>
+__device__ __forceinline__
+inline void appendToQueueAtomic(const T& data, int* Qcounter, T* Qptr){ //{{{
+  int dataLoc   = atomicAdd(Qcounter, 1);
+  Qptr[dataLoc] = data;
+} //}}}
+
+
 // Get current SM ID
 // from:
 // http://stackoverflow.com/questions/2983553/cuda-injecting-my-own-ptx-function
