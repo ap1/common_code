@@ -107,6 +107,7 @@ inline bool     operator!=(const cvec2f& v1, const cvec2f& v2){ return !equalvec
 inline bool     operator!=(const cvec3f& v1, const cvec3f& v2){ return !equalvec(v1,v2); }
 inline bool     operator!=(const cvec4f& v1, const cvec4f& v2){ return !equalvec(v1,v2); }
 
+inline void     clampInplace(float& val, const float& vmin=0.0f, const float& vmax=1.0f);
 inline void     clampInplace(cvec2f& v){ clampInplace(v.x); clampInplace(v.y); }
 inline void     clampInplace(cvec3f& v){ clampInplace(v.x); clampInplace(v.y); clampInplace(v.z); }
 inline void     clampInplace(cvec4f& v){ clampInplace(v.x); clampInplace(v.y); clampInplace(v.z); clampInplace(v.w); }

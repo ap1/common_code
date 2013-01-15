@@ -118,7 +118,7 @@ inline float getAngle(float y, float x){
   return angle;
 }
 
-inline void clampInplace(float& val, const float& vmin=0.0f, const float& vmax=1.0f){
+inline void clampInplace(float& val, const float& vmin, const float& vmax){
   if(val < vmin) val = vmin;
   if(val > vmax) val = vmax;
 }
