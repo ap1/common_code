@@ -21,11 +21,11 @@
 // malloc / new inside its members
 // ---------------------------------------------------
 
-#ifdef __NVCC__
-  #define CVEC_FUNC __device__ __forceinline__ inline
-#else
-  #define CVEC_FUNC inline
-#endif
+//#ifdef __NVCC__
+//  #define CVEC_FUNC __device__ __forceinline__ inline
+//#else
+#define CVEC_FUNC inline
+//#endif
 
 struct cvec2f{ float  x, y;       };
 struct cvec3f{ float  x, y, z;    };
