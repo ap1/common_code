@@ -57,6 +57,18 @@ inline void cuiReportMemUsage(const char* prefix=""){
 
 #ifdef __CUDACC__
 
+// Some helper routines - taken from cudaraster
+// src / cudaraster / cuda / Util.hpp
+__device__ __inline__ unsigned getLaneMaskLt  (void)       { unsigned r; asm("mov.u32 %0, %%lanemask_lt;" : "=r"(r)); return r; }
+__device__ __inline__ unsigned getLaneMaskLe  (void)       { unsigned r; asm("mov.u32 %0, %%lanemask_le;" : "=r"(r)); return r; }
+__device__ __inline__ unsigned getLaneMaskGt  (void)       { unsigned r; asm("mov.u32 %0, %%lanemask_gt;" : "=r"(r)); return r; }
+__device__ __inline__ unsigned getLaneMaskGe  (void)       { unsigned r; asm("mov.u32 %0, %%lanemask_ge;" : "=r"(r)); return r; }
+__device__ __inline__ int      findLeadingOne (unsigned v) { unsigned r; asm("bfind.u32 %0, %1;" : "=r"(r) : "r"(v)); return r; }
+__device__ __inline__ int      findLastOne    (unsigned v) { return 31-findLeadingOne(__brev(v)); } // 0..31, 32 for not found
+__device__ __inline__ bool     singleLane     (void)       { return ((__ballot(true) & getLaneMaskLt()) == 0); }
+
+
+
 // CUDA based queues
 
 template <class T>
@@ -76,6 +88,14 @@ unsigned cuiGetSMID(void){
   asm("mov.u32 %0, %smid;" : "=r"(ret) );
   return ret;
 }
+
+
+// Warp-wide bitscan
+unsigned bitScanWarp(unsigned myBit) {
+  unsigned myIdx = __popc(__ballot(myBit) & getLaneMaskLt());
+  return myIdx;
+}
+
 #endif
 
 #endif
