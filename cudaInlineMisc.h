@@ -59,6 +59,7 @@ inline void cuiReportMemUsage(const char* prefix=""){
 
 // Some helper routines - taken from cudaraster
 // src / cudaraster / cuda / Util.hpp
+
 __device__ __inline__ unsigned getLaneMaskLt  (void)       { unsigned r; asm("mov.u32 %0, %%lanemask_lt;" : "=r"(r)); return r; }
 __device__ __inline__ unsigned getLaneMaskLe  (void)       { unsigned r; asm("mov.u32 %0, %%lanemask_le;" : "=r"(r)); return r; }
 __device__ __inline__ unsigned getLaneMaskGt  (void)       { unsigned r; asm("mov.u32 %0, %%lanemask_gt;" : "=r"(r)); return r; }
@@ -67,6 +68,17 @@ __device__ __inline__ int      findLeadingOne (unsigned v) { unsigned r; asm("bf
 __device__ __inline__ int      findLastOne    (unsigned v) { return 31-findLeadingOne(__brev(v)); } // 0..31, 32 for not found
 __device__ __inline__ bool     singleLane     (void)       { return ((__ballot(true) & getLaneMaskLt()) == 0); }
 
+#if FW_64
+#   define PTX_PTR(P) "l"(P)
+#else
+#   define PTX_PTR(P) "r"(P)
+#endif
+
+__device__ __inline__ unsigned cachedLoad     (const unsigned* p)          { unsigned v; asm("ld.global.ca.u32 %0, [%1];" : "=r"(v) : PTX_PTR(p)); return v; }
+__device__ __inline__ void     cachedStore    (unsigned* p, unsigned v)    { asm("st.global.wb.u32 [%0], %1;" :: PTX_PTR(p), "r"(v)); }
+
+__device__ __inline__ unsigned uncachedLoad   (const unsigned* p)          { unsigned v; asm("ld.global.cg.u32 %0, [%1];" : "=r"(v) : PTX_PTR(p)); return v; }
+__device__ __inline__ void     uncachedStore  (unsigned* p, unsigned v)    { asm("st.global.cg.u32 [%0], %1;" :: PTX_PTR(p), "r"(v)); }
 
 
 // CUDA based queues
