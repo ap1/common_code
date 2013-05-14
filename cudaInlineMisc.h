@@ -103,6 +103,7 @@ unsigned cuiGetSMID(void){
 
 
 // Warp-wide bitscan
+__device__ __forceinline__
 unsigned bitScanWarp(unsigned myBit) {
   unsigned myIdx = __popc(__ballot(myBit) & getLaneMaskLt());
   return myIdx;
