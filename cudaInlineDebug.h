@@ -10,7 +10,7 @@
 
 // debug outside a kernel
 // only if CUDA Error
-#define __CUDEB {cudaThreadSynchronize(); CUT_CHECK_ERROR("");}
+#define __CUDEB {cudaDeviceSynchronize(); CUT_CHECK_ERROR("");}
 
 inline void cuiDispArray(int* arr, int count, char delim=' '){
   int *temp = new int[count];
