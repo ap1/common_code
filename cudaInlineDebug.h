@@ -3,7 +3,7 @@
 
 #include <cuda.h>
 #include <cuda_runtime.h>
-#include <cutil_inline.h>
+
 
 // debug inside a kernel
 #define __KERDEB(tid) {if(threadIdx.x==tid)printf("Reached %s (%d)\n",__FILE__,__LINE__);}
