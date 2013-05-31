@@ -2,6 +2,8 @@
 #define colors_h
 
 #include "misc.h"
+#include "rands.h"
+#include "cvecs.h"
 
 #define CLR_RED                  (0x000000ff)
 #define CLR_GREEN                (0x0000ff00)
@@ -21,10 +23,9 @@ inline uint rgbaFloatToInt(float r, float g, float b, float a=0.0f){
 }
 
 #define COLOR_PALETTE_GEN_RGB \
-    float r = r_beg + RAND_01 * (r_end - r_beg);  \
-    float g = g_beg + RAND_01 * (g_end - g_beg);  \
-    float b = b_beg + RAND_01 * (b_end - b_beg);  \
-\
+    float r = r_beg + rand01f() * (r_end - r_beg);  \
+    float g = g_beg + rand01f() * (g_end - g_beg);  \
+    float b = b_beg + rand01f() * (b_end - b_beg);  \
     r = all_beg + r * (all_end - all_beg);  \
     g = all_beg + g * (all_end - all_beg);  \
     b = all_beg + b * (all_end - all_beg);  
@@ -45,14 +46,14 @@ inline uint* generate_uint_palette(
   return outcolors;
 }
 
-inline vec3f* generate_vec3f_palette(
+inline cvec3f* generate_vec3f_palette(
     int   count    = 256,
     float all_beg  = 0.0f, float all_end  = 1.0f,
     float r_beg    = 0.0f, float r_end    = 1.0f,
     float g_beg    = 0.0f, float g_end    = 1.0f,
     float b_beg    = 0.0f, float b_end    = 1.0f) {
 
-  cvec3f* outcolors = new vec3f[count];
+  cvec3f* outcolors = new cvec3f[count];
   for(int i=0; i<count; i++){
     COLOR_PALETTE_GEN_RGB;
     outcolors[i] = gencvec3f(r,g,b);

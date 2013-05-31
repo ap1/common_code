@@ -7,6 +7,10 @@ inline double rand01(){
     return ((double)rand()/(double)RAND_MAX);
 }
 
+inline float rand01f(){
+    return ((float)rand01());
+}
+
 inline void shuffle(float *samp, int count){
     for(int i=0;i<(count-1);i++){
         int other = i + (rand()%(count-i));
