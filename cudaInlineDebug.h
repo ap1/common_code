@@ -3,14 +3,14 @@
 
 #include <cuda.h>
 #include <cuda_runtime.h>
-
+#include <helper_cuda.h>
 
 // debug inside a kernel
 #define __KERDEB(tid) {if(threadIdx.x==tid)printf("Reached %s (%d)\n",__FILE__,__LINE__);}
 
 // debug outside a kernel
 // only if CUDA Error
-#define __CUDEB {cudaDeviceSynchronize(); CUT_CHECK_ERROR("");}
+#define __CUDEB {cudaDeviceSynchronize(); getLastCudaError("");}
 
 inline void cuiDispArray(int* arr, int count, char delim=' '){
   int *temp = new int[count];
