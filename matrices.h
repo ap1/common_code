@@ -83,23 +83,6 @@ inline int GenerateInverseMatrix4f(float i[16], const float m[16])
 } 
 
 
-inline void vtransform(const float m[16], const vec4f& vin, vec4f& vout){
-    vout.x() = vin.peekx() * m[ 0] + vin.peeky() * m[ 4] + vin.peekz() * m[ 8] + vin.peekw() * m[12];
-    vout.y() = vin.peekx() * m[ 1] + vin.peeky() * m[ 5] + vin.peekz() * m[ 9] + vin.peekw() * m[13];
-    vout.z() = vin.peekx() * m[ 2] + vin.peeky() * m[ 6] + vin.peekz() * m[10] + vin.peekw() * m[14];
-    vout.w() = vin.peekx() * m[ 3] + vin.peeky() * m[ 7] + vin.peekz() * m[11] + vin.peekw() * m[15];
-}
-
-inline void vtransform(const float m[16], const vec3f& vin, vec4f& vout){
-    vec4f vh = vec4f(vin.peekx(), vin.peeky(), vin.peekz(), 1.0f);
-    vtransform(m, vh, vout);
-}
-
-inline void ntransform(const float m[16], const vec3f& vin, vec3f& vout){
-    vout.x() = vin.peekx() * m[ 0] + vin.peeky() * m[ 1] + vin.peekz() * m[ 2];
-    vout.y() = vin.peekx() * m[ 4] + vin.peeky() * m[ 5] + vin.peekz() * m[ 6];
-    vout.z() = vin.peekx() * m[ 8] + vin.peeky() * m[ 9] + vin.peekz() * m[10];
-}
 
 
 inline void vtransform(const float m[16], const cvec4f& vin, cvec4f& vout){
