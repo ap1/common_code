@@ -2,7 +2,6 @@
 #define maths_h
 
 #include <cmath>
-#include "vecs.h"
 #include "cvecs.h"
 
 #include "debugs.h"
@@ -39,10 +38,8 @@ inline T interpolateBary(   T& v0,    T& v1,         T& v2,
 }
 
 template <class T>
-inline T interpolateBary(T& v0, T& v1, T& v2, vec3f& interpolant){
-  return (v0 * interpolant.x() + 
-          v1 * interpolant.y() + 
-          v2 * interpolant.z());
+inline T interpolateBary(T& v0, T& v1, T& v2, cvec3f& interpolant){
+  return (v0 * interpolant.x + v1 * interpolant.y + v2 * interpolant.z);
 }
 
 inline float dist2d(const float& x1, const float& y1, 
@@ -118,9 +115,55 @@ inline float getAngle(float y, float x){
   return angle;
 }
 
+inline int GetQuadrant(float angle)
+{
+  if      (angle >= PI * 0.0f && angle < PI * 0.5f) return 1;
+  else if (angle >= PI * 0.5f && angle < PI * 1.0f) return 2;
+  else if (angle >= PI * 1.0f && angle < PI * 1.5f) return 3;
+  else if (angle >= PI * 1.5f && angle <= PI * 2.0f) return 4;
+  else
+  {
+    printf("error: invalid angle %f (getquadrant)\n", angle);
+    return 0;
+  }
+}
+
 inline void clampInplace(float& val, const float& vmin, const float& vmax){
   if(val < vmin) val = vmin;
   if(val > vmax) val = vmax;
+}
+
+inline float SignOf(float val)
+{
+  return (val > 0.0f) ? (1.0f) : ((val < 0.0f) ? (-1.0f) : (0.0f));
+}
+
+inline float dist_linesegment(const cvec2f& m, const cvec2f& a, const cvec2f& b)
+{
+  // finds distance between m and line segment a-b
+
+  // first find the closest point on line,
+  // clamp the point to line segment
+  // calculate distance
+
+  // line is a + t d where d = (b-a)
+  auto d = b - a;
+
+  // calculation left as exercise for the reader
+  auto t = dotvec(d, m - a) / dotvec(d, d);
+
+  clampInplace(t, 0.0f, 1.0f);
+
+  // disp2(m); printf("\n");
+  // disp2(a); printf(" ");
+  // disp2(b); printf("\n");
+
+  auto retval = magvec(m - (a + t * d));
+
+  // printf("dist = %f\n", retval);
+
+  return retval;
+
 }
 
 #endif
