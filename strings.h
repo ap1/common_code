@@ -35,6 +35,16 @@ inline void trimString(std::string& str){
     else str.erase(str.begin(), str.end());
 }
 
+inline void StripComments(std::string& str, const std::string& comm)
+{
+    auto pos = str.find(comm);
+
+    if(pos != std::string::npos)
+    {
+        str = str.substr(0, pos);
+    }
+}
+
 // tokenize a string based on a set of single-char delimiters
 inline void ltokenize(const std::string& str,const std::string& delimiters, std::list<std::string> &tokens)
 {
@@ -92,7 +102,8 @@ inline void vtokenize_degen(const std::string& str,const std::string& delimiters
 
 
 // tokenize a string based on a set of single-char delimiters
-inline void vtokenize(const std::string& str,const std::string& delimiters, std::vector<std::string> &tokens)
+inline void vtokenize(const std::string& str,const std::string& delimiters, 
+    std::vector<std::string> &tokens)
 {
     tokens.clear();
     // if empty, return empty
@@ -111,7 +122,5 @@ inline void vtokenize(const std::string& str,const std::string& delimiters, std:
         pos = str.find_first_of(delimiters, lastPos);
     }
 }
-
-
 
 #endif
