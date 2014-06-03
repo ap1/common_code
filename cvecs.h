@@ -9,7 +9,8 @@
 #define M_PI 3.1415926f
 #endif
 
-#include "maths.h"
+//#include "maths.h"
+#include "debugs.h"
 
 // ---------------------------------------------------
 //  cvecs: c-style vecs (but in C++ environment only)
@@ -76,6 +77,10 @@ CVEC_FUNC void     mulvecInplace(cvec2f& v1, const float& k){ v1.x=v1.x*k; v1.y=
 CVEC_FUNC void     mulvecInplace(cvec3f& v1, const float& k){ v1.x=v1.x*k; v1.y=v1.y*k; v1.z=v1.z*k; }
 CVEC_FUNC void     mulvecInplace(cvec4f& v1, const float& k){ v1.x=v1.x*k; v1.y=v1.y*k; v1.z=v1.z*k; v1.w=v1.w*k; }
 
+CVEC_FUNC cvec2f   operator-(const cvec2f& v){ return gencvec2f(-v.x, -v.y); }
+CVEC_FUNC cvec3f   operator-(const cvec3f& v){ return gencvec3f(-v.x, -v.y, -v.z); }
+CVEC_FUNC cvec4f   operator-(const cvec4f& v){ return gencvec4f(-v.x, -v.y, -v.z, -v.w); }
+
 CVEC_FUNC cvec2f   operator+(const cvec2f& v1, const cvec2f& v2){ return addvec(v1, v2); }
 CVEC_FUNC cvec3f   operator+(const cvec3f& v1, const cvec3f& v2){ return addvec(v1, v2); }
 CVEC_FUNC cvec4f   operator+(const cvec4f& v1, const cvec4f& v2){ return addvec(v1, v2); }
@@ -139,6 +144,12 @@ template <class T>  CVEC_FUNC void normalizeInplace(T& v){
   if(m != 0.0f) mulvecInplace(v, (1.0f/m));
 }
 
+template <class T>  CVEC_FUNC T normalizevec(const T& v){ 
+  float m = magvec(v);
+  if(m != 0.0f) return mulvec(v, (1.0f/m));
+  else return gencvec2f(1.0f, 0.0f);
+}
+
 template <class T>  CVEC_FUNC T lerp(const T& a, const T& b, float t) { 
   return (addvec(mulvec(a, 1.0f-t),mulvec(b, t)));
 }
@@ -152,12 +163,11 @@ CVEC_FUNC cvec3f cross( const cvec3f& v1, const cvec3f& v2 )
   return crossprod;
 }
 
-//CVEC_FUNC cvec3f reflect(cvec3f & n, cvec3f & d)
-//{
-//  cvec3f output = d - 2 *dot(n,d) * n;
-//  return output;
-//}
-//
+CVEC_FUNC cvec3f reflect(cvec3f & n, cvec3f & d)
+{
+  cvec3f output = d - 2 * dotvec(n,d) * n;
+  return output;
+}
 
 CVEC_FUNC void matmultvec4f(const float * matrix, const cvec4f& v, cvec4f& ssv)
 {
