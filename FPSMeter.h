@@ -1,17 +1,31 @@
 #pragma once
 
+#ifdef _WIN32
+
 #include <windows.h>
 #include <windowsx.h>
 
+#define CLOCK_TYPE long long
+#define GET_CLOCK(x)      {QueryPerformanceCounter((LARGE_INTEGER*)&x);}
+#define GET_CLOCK_RATE(x) {QueryPerformanceFrequency((LARGE_INTEGER*)&x);}
 
+#else
+
+#include <ctime>
+
+#define CLOCK_TYPE clock_t
+#define GET_CLOCK(x)      {x = clock();}
+#define GET_CLOCK_RATE(x) {x = CLOCKS_PER_SEC;}
+
+#endif
 
 class FPSMeter
 {
 public:
-  long long ticks_per_sec;
-  long long cur_tick;
-  long long last_tick;
-  long long counter_tick;
+  CLOCK_TYPE ticks_per_sec;
+  CLOCK_TYPE cur_tick;
+  CLOCK_TYPE last_tick;
+  CLOCK_TYPE counter_tick;
   float frame_diff_sec, counter_diff_sec;
   int counter;
   bool started;
@@ -20,12 +34,12 @@ public:
   FPSMeter()
   {
     started = false;
-    QueryPerformanceFrequency((LARGE_INTEGER *)&ticks_per_sec);
+    GET_CLOCK_RATE(ticks_per_sec);
   }
 
   inline void RegisterFrame()
   {
-    QueryPerformanceCounter((LARGE_INTEGER *)&cur_tick);
+    GET_CLOCK(cur_tick);
 
     if(!started)
     {
@@ -53,27 +67,26 @@ public:
   }
 };
 
-
 class Stopwatch
 {
 public:
-  long long ticks_per_sec;
-  long long cur_tick;
-  long long start_tick;
+  CLOCK_TYPE ticks_per_sec;
+  CLOCK_TYPE cur_tick;
+  CLOCK_TYPE start_tick;
 
   bool started;
 
   Stopwatch()
   {
     started = false;
-    QueryPerformanceFrequency((LARGE_INTEGER *)&ticks_per_sec);
+    GET_CLOCK_RATE(ticks_per_sec);
   }
 
   inline float GetTime()
   {
     if(started)
     {
-      QueryPerformanceCounter((LARGE_INTEGER *)&cur_tick);
+      GET_CLOCK(cur_tick);
       return (float)((double)(cur_tick - start_tick) / (double) ticks_per_sec);
     }
     else
@@ -86,7 +99,7 @@ public:
   inline void Reset()
   {
     started = true;
-    QueryPerformanceCounter((LARGE_INTEGER *)&start_tick);
+    GET_CLOCK(start_tick);
   }
 
   inline void Stop()
