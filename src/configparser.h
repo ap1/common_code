@@ -5,8 +5,8 @@
 #include <fstream>
 #include <vector>
 #include <string>
-#include "../common/strings.h"
-#include "../common/cvecs.h"
+#include "strings.h"
+#include "cvecs.h"
 
 // Simple config parser
 // --------------------
