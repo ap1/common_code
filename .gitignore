@@ -13,3 +13,6 @@
 
 # vim swap file
 *.swp
+*.opensdf
+*.sdf
+*.suo
