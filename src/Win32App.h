@@ -10,6 +10,8 @@
 #include <algorithm>
 #include <vector>
 
+#include "Win32Form.h"
+
 class Win32GUI
 {
 public:
@@ -36,73 +38,112 @@ public:
   }
 };
 
-class Win32App : public Win32GUI
+class Win32App
 {
 private:
 public:
-  HINSTANCE hInstance;
-  std::string sCommandLine;
+  static HINSTANCE hInstance;
+  static std::string sCommandLine;
+  static std::vector<Win32Form*> forms_;
 
-  Win32App() : Win32GUI(NULL)
+  static inline void RegisterForm(Win32Form* form)
   {
+    forms_.push_back(form);
+
+    WNDCLASSEX wcex;
+
+    wcex.cbSize         = sizeof(WNDCLASSEX);
+    wcex.style          = CS_HREDRAW | CS_VREDRAW;
+    wcex.lpfnWndProc    = Win32App::MessageHandler;
+    wcex.cbClsExtra     = 0;
+    wcex.cbWndExtra     = 0;
+    wcex.hInstance      = hInstance;
+    wcex.hIcon          = 0;
+    wcex.hCursor        = 0;
+    wcex.hbrBackground  = 0;
+    wcex.lpszMenuName   = 0;
+    wcex.lpszClassName  = form->GetFormClassName();
+    wcex.hIconSm        = 0;
+
+    RegisterClassEx(&wcex);
   }
 
-  ~Win32App()
+  static inline void UnregisterForm(Win32Form* form)
   {
+    forms_.erase(
+      std::remove(forms_.begin(), forms_.end(), form), 
+      forms_.end());
   }
 
-  static inline LRESULT CALLBACK MessageHandler
-  (Win32App* app, HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+  static inline Win32Form* FindForm(HWND hWnd)
   {
-    app->MessageHandler(hWnd, message, wParam, lParam);
-  }
-
-  inline int MessageHandler(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-  {
-    int wmId, wmEvent;
-
-    switch (message)
+    for(auto pform : forms_)
     {
-    case WM_COMMAND:
-      wmId = LOWORD(wParam);
-      wmEvent = HIWORD(wParam);
-      // // Parse the menu selections:
-      // switch (wmId)
-      // {
-      //   default:
-      //     return DefWindowProc(hWnd, message, wParam, lParam);
-      // }
-      break;
-    case WM_PAINT:
-      // this->Paint();
-      // hdc = BeginPaint(hWnd, &ps);
-
-      // EndPaint(hWnd, &ps);
-      // break;
-    case WM_DESTROY:
-      PostQuitMessage(0);
-      break;
-    default:
-      return DefWindowProc(hWnd, message, wParam, lParam);
-    }    
+      if(pform->hWnd == hWnd) return pform;
+    }
+    return NULL;
   }
 
-  inline void Init()
+
+  // static inline LRESULT CALLBACK MessageHandler
+  // (Win32App* app, HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+  // {
+  //   app->MessageHandler(hWnd, message, wParam, lParam);
+  // }
+
+  static inline LRESULT CALLBACK MessageHandler(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+  {
+    auto pform =  FindForm(hWnd);
+
+    if(pform != NULL) 
+      pform->MessageHandler(message, wParam, lParam);
+
+    // int wmId, wmEvent;
+
+    // switch (message)
+    // {
+    // case WM_COMMAND:
+    //   wmId = LOWORD(wParam);
+    //   wmEvent = HIWORD(wParam);
+    //   // // Parse the menu selections:
+    //   // switch (wmId)
+    //   // {
+    //   //   default:
+    //   //     return DefWindowProc(hWnd, message, wParam, lParam);
+    //   // }
+    //   break;
+    // case WM_PAINT:
+    //   // this->Paint();
+    //   // hdc = BeginPaint(hWnd, &ps);
+
+    //   // EndPaint(hWnd, &ps);
+    //   // break;
+    // case WM_DESTROY:
+    //   PostQuitMessage(0);
+    //   break;
+    // default:
+    //   return DefWindowProc(hWnd, message, wParam, lParam);
+    // }    
+
+    return 0;
+  }
+
+  static inline void Init()
   {
     hInstance = GetModuleHandle(NULL);
     sCommandLine = GetCommandLine();
 
-    InitInstance(hInstance, SW_SHOW);
+    //InitInstance(hInstance, SW_SHOW);
   }
 
-  inline ATOM RegisterClass()
+  static inline ATOM RegisterClass()
   {
     WNDCLASSEX wcex;
 
     wcex.cbSize = sizeof(WNDCLASSEX);
 
     wcex.style = CS_HREDRAW | CS_VREDRAW;
-    wcex.lpfnWndProc = this->MessageHandler;
+    wcex.lpfnWndProc = Win32App::MessageHandler;
     wcex.cbClsExtra = 0;
     wcex.cbWndExtra = 0;
     wcex.hInstance = hInstance;
