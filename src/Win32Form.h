@@ -12,12 +12,20 @@
 #include <vector>
 #include "cvecs.h"
 
+enum class Win32FormState
+{
+  Registered,
+  Destroyed,
+  Count
+};
+
 class Win32Form
 {
 private:
 public:
   HDC hdc;
   HWND hWnd;
+  Win32FormState state_;
   
   Win32Form();
   virtual ~Win32Form();
@@ -26,6 +34,7 @@ public:
   virtual void            Show              ();
   virtual void            Update            ();
   virtual void            Refresh           (bool bErase = true);
+  virtual void            Destroy           ();
   virtual void            MainLoop          ();
   virtual void            MainLoopInstance  ();
 

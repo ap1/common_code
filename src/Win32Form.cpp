@@ -11,12 +11,14 @@ using namespace std;
 Win32Form::Win32Form()
 {
   Win32App::RegisterForm(this);
-  Create();
+  state_ = Win32FormState::Registered;
+  this->Create();
 }
 
 Win32Form::~Win32Form()
 {
-  Win32App::UnregisterForm(this);
+  if(state_ != Win32FormState::Destroyed)
+    this->Destroy();
 }
 
 void Win32Form::Create()
@@ -37,6 +39,12 @@ void Win32Form::Show()                { int ret = ShowWindow(hWnd, SW_SHOW); } /
 void Win32Form::Update()              { UpdateWindow(hWnd); }
 void Win32Form::Refresh(bool bErase)  { InvalidateRect(hWnd, NULL, bErase); }
 void Win32Form::MainLoop()            { }
+
+void Win32Form::Destroy()
+{
+  Win32App::UnregisterForm(this);
+  state_ = Win32FormState::Destroyed;
+}
 
 void Win32Form::MainLoopInstance()    { }
 
@@ -102,7 +110,34 @@ void Win32Form::DrawLine(cvec2f& beg, cvec2f& end)
 
 LRESULT Win32Form::MessageHandler (UINT message, WPARAM wParam, LPARAM lParam)
 {
-  return DefWindowProc(hWnd, message, wParam, lParam);
+
+  int wmId, wmEvent;
+
+  switch (message)
+  {
+  // case WM_COMMAND:
+  //   wmId = LOWORD(wParam);
+  //   wmEvent = HIWORD(wParam);
+  //   // // Parse the menu selections:
+  //   // switch (wmId)
+  //   // {
+  //   //   default:
+  //   //     return DefWindowProc(hWnd, message, wParam, lParam);
+  //   // }
+  //   break;
+  // case WM_PAINT:
+  //   // this->Paint();
+  //   // hdc = BeginPaint(hWnd, &ps);
+
+  //   // EndPaint(hWnd, &ps);
+  //   // break;
+  case WM_DESTROY:
+    this->Destroy();
+    PostQuitMessage(0);
+    break;
+  default:
+    return DefWindowProc(hWnd, message, wParam, lParam);
+  }
 }
 
 
