@@ -10,6 +10,7 @@ using namespace std;
 
 Win32Form::Win32Form()
 {
+  Win32App::RegisterForm(this);
   Create();
 }
 
@@ -21,18 +22,23 @@ Win32Form::~Win32Form()
 void Win32Form::Create()
 {
   hWnd = CreateWindow(GetFormClassName(), "Untitled Form", WS_OVERLAPPEDWINDOW, 
-    CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, Win32App::hInstance, NULL);
+    0, 0, 100, 100, NULL, NULL, Win32App::hInstance, NULL);
 
-  Win32App::RegisterForm(this);
+  if (!hWnd)
+  {
+    printf("hWnd is NULL!\n");
+  }
 
   this->Show();
   this->Update();
 }
 
-void Win32Form::Show()                { ShowWindow(hWnd, SW_SHOW); }
+void Win32Form::Show()                { int ret = ShowWindow(hWnd, SW_SHOW); } // printf("Show win returned %d\n", ret); }
 void Win32Form::Update()              { UpdateWindow(hWnd); }
 void Win32Form::Refresh(bool bErase)  { InvalidateRect(hWnd, NULL, bErase); }
 void Win32Form::MainLoop()            { }
+
+void Win32Form::MainLoopInstance()    { }
 
 std::string Win32Form::GetTitle()
 {
@@ -94,9 +100,9 @@ void Win32Form::DrawLine(cvec2f& beg, cvec2f& end)
 }
 
 
-void Win32Form::MessageHandler (UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT Win32Form::MessageHandler (UINT message, WPARAM wParam, LPARAM lParam)
 {
-
+  return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
 

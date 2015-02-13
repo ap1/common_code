@@ -27,6 +27,8 @@ public:
   virtual void            Update            ();
   virtual void            Refresh           (bool bErase = true);
   virtual void            MainLoop          ();
+  virtual void            MainLoopInstance  ();
+
 
   virtual std::string     GetTitle          ();
   virtual void            SetTitle          ();
@@ -42,7 +44,7 @@ public:
   virtual void            DrawLine          (cvec2f& beg, cvec2f& end);
   virtual void            DrawRect          (cvec2f& beg, cvec2f& end);
 
-  virtual void            MessageHandler    (UINT message, WPARAM wParam, LPARAM lParam);
+  virtual LRESULT         MessageHandler    (UINT message, WPARAM wParam, LPARAM lParam);
   virtual LPCSTR          GetFormClassName  ();
 };
 
