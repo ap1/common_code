@@ -3,6 +3,7 @@
 // C RunTime Header Files
 #include <cstdlib>
 #include <tchar.h>
+#include <memory>
 
 #include "Win32App.h"
 
@@ -24,7 +25,7 @@ Win32Form::~Win32Form()
 void Win32Form::Create()
 {
   hWnd = CreateWindow(GetFormClassName(), "Untitled Form", WS_OVERLAPPEDWINDOW, 
-    0, 0, 100, 100, NULL, NULL, Win32App::hInstance, NULL);
+    CW_USEDEFAULT, CW_USEDEFAULT, 256, 256, NULL, NULL, Win32App::hInstance, NULL);
 
   if (!hWnd)
   {
@@ -50,15 +51,21 @@ void Win32Form::MainLoopInstance()    { }
 
 std::string Win32Form::GetTitle()
 {
-  return "";
+  int len = 512;//GetWindowTextLength(hWnd);
+  std::shared_ptr<char> title(new char[len+1]);
+  GetWindowText(hWnd, title.get(), len);
+  std::string ret = title.get();
+  return ret;
 }
 
-void Win32Form::SetTitle()
+void Win32Form::SetTitle(const std::string& title)
 {
+  SetWindowText(hWnd, title.c_str());
 }
 
 cvec2i Win32Form::GetPosition()
 {
+  //GetWindowRect(hWnd, )
   return gencvec2i(0,0);
 }
 
@@ -90,18 +97,22 @@ void Win32Form::Paint()
 
 void Win32Form::UserPaint()
 {
+  //printf("base\n");
+  //DrawRect(gencvec2f(40.0f,40.0f), gencvec2f(100.0f,100.0f));
+  //DrawLine(gencvec2f(40.0f,40.0f), gencvec2f(100.0f,100.0f));
 }
 
-void Win32Form::DrawRect(cvec2f& beg, cvec2f& end)
+void Win32Form::DrawRect(const cvec2f& beg, const cvec2f& end)
 {
   MoveToEx(hdc, (int)beg.x, (int)beg.y, NULL);
   LineTo  (hdc, (int)end.x, (int)beg.y);
   LineTo  (hdc, (int)end.x, (int)end.y);
   LineTo  (hdc, (int)beg.x, (int)end.y);
   LineTo  (hdc, (int)beg.x, (int)beg.y);
+
 }
 
-void Win32Form::DrawLine(cvec2f& beg, cvec2f& end)
+void Win32Form::DrawLine(const cvec2f& beg, const cvec2f& end)
 {
   MoveToEx(hdc, (int)beg.x, (int)beg.y, NULL);
   LineTo  (hdc, (int)end.x, (int)end.y);
@@ -112,6 +123,7 @@ LRESULT Win32Form::MessageHandler (UINT message, WPARAM wParam, LPARAM lParam)
 {
 
   int wmId, wmEvent;
+  PAINTSTRUCT ps;
 
   switch (message)
   {
@@ -125,15 +137,17 @@ LRESULT Win32Form::MessageHandler (UINT message, WPARAM wParam, LPARAM lParam)
   //   //     return DefWindowProc(hWnd, message, wParam, lParam);
   //   // }
   //   break;
-  // case WM_PAINT:
-  //   // this->Paint();
-  //   // hdc = BeginPaint(hWnd, &ps);
-
-  //   // EndPaint(hWnd, &ps);
-  //   // break;
+  case WM_PAINT:
+    hdc = BeginPaint(hWnd, &ps);
+    this->Paint();
+    this->UserPaint();
+    EndPaint(hWnd, &ps);
+    return DefWindowProc(hWnd, message, wParam, lParam);
+    break;
   case WM_DESTROY:
     this->Destroy();
     PostQuitMessage(0);
+    return DefWindowProc(hWnd, message, wParam, lParam);
     break;
   default:
     return DefWindowProc(hWnd, message, wParam, lParam);

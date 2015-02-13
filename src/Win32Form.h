@@ -40,7 +40,7 @@ public:
 
 
   virtual std::string     GetTitle          ();
-  virtual void            SetTitle          ();
+  virtual void            SetTitle          (const std::string& title);
   virtual cvec2i          GetPosition       ();
   virtual void            SetPosition       (const cvec2i& p);
   virtual cvec2i          GetSize           ();
@@ -50,8 +50,8 @@ public:
 
   virtual void            Paint             ();
   virtual void            UserPaint         ();
-  virtual void            DrawLine          (cvec2f& beg, cvec2f& end);
-  virtual void            DrawRect          (cvec2f& beg, cvec2f& end);
+  virtual void            DrawLine          (const cvec2f& beg, const cvec2f& end);
+  virtual void            DrawRect          (const cvec2f& beg, const cvec2f& end);
 
   virtual LRESULT         MessageHandler    (UINT message, WPARAM wParam, LPARAM lParam);
   virtual LPCSTR          GetFormClassName  ();

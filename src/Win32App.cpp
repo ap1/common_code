@@ -36,7 +36,7 @@ void Win32App::UnregisterForm(Win32Form* form)
     std::remove(forms_.begin(), forms_.end(), form), 
     forms_.end());
 
-  printf("Unregistering form titled: %s\n", form->GetFormClassName());
+  printf("Unregistering form titled: %s (%s)\n", form->GetTitle().c_str(), form->GetFormClassName());
 }
 
 Win32Form* Win32App::FindForm(HWND hWnd)
